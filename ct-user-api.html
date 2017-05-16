@@ -5,22 +5,44 @@
 <dom-module id="ct-user-api">
   <template>
     <iron-ajax id="getUser"></iron-ajax>
+    <iron-ajax id="getUsers"></iron-ajax>
   </template>
 
   <script>
-    Polymer({
-      is: 'ct-user-api',
-      behaviors: [CT.Behaviours.ApiProvider],
+      Polymer({
+          is: 'ct-user-api',
+          behaviors: [CT.Behaviours.ApiProvider],
 
-      /**
-       * Get a user by id
-       *
-       * @returns {Promise}
-       */
-      getUser: function(id) {
-        this.$.getUser.url = this._url('/user/' + id);
-        return this._generateRequest(this.$.getUser);
-      }
-    });
+          /**
+           * Get a user by id
+           *
+           * @returns {Promise}
+           */
+          getUser: function(id) {
+              this.$.getUser.url = this._url('/users/' + id);
+              return this._generateRequest(this.$.getUser);
+          },
+
+          /**
+           * Get users
+           *
+           * @returns {Promise}
+           */
+          getUsers: function(groupId, pageNum, pageSize) {
+
+              var pageNum = pageNum || 0,
+                  pageSize = pageSize || 20,
+                  params = '';
+
+              params += '?group_id='+groupId;
+              params += '&page_number='+pageNum;
+              params += '&page_size='+pageSize;
+
+              this.$.getUser.url = this._url('/users' + params);
+              return this._generateRequest(this.$.getUser);
+          },
+
+
+      });
   </script>
 </dom-module>
