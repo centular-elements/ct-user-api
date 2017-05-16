@@ -18,7 +18,7 @@
        * @returns {Promise}
        */
       getUser: function(id) {
-        this.$.getUser.url = this._url('/user/' + id);
+        this.$.getUser.url = this._url('/users/' + id);
         return this._generateRequest(this.$.getUser);
       }
     });
