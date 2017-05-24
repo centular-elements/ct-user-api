@@ -1,11 +1,15 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../ct-core-utils/ct-api-provider-behaviour.html">
+<link rel="import" href="../ct-core-utils/ct-user-identity.html">
 
 <dom-module id="ct-user-api">
   <template>
+    <ct-user-identity id="identity"></ct-user-identity>
     <iron-ajax id="getUser"></iron-ajax>
     <iron-ajax id="getUsers"></iron-ajax>
+    <iron-ajax id="updateUser"></iron-ajax>
+    <iron-ajax id="deleteUser"></iron-ajax>
   </template>
 
   <script>
@@ -40,6 +44,53 @@
 
               this.$.getUser.url = this._url('/users' + params);
               return this._generateRequest(this.$.getUser);
+          },
+
+          /**
+           * Update a user
+           *
+           * @param {String} id
+           *
+           * @param {Object[]} params
+           * @param {String} params[].firstname
+           * @param {String} params[].lastname
+           *
+           * @param {Object[]} params[].contacts
+           * @param {Number} [params[].contacts[].contact]
+           * @param {Number} [params[].contacts[].contactType]
+           *
+           * @param {Object[]} params[].groups
+           * @param {Number} [params[].groups[].id]
+           * @param {Number} [params[].groups[].name]
+           *
+           * @param {Object[]} params[].additionalInfo
+           * @param {Number} [params[].additionalInfo[].key]
+           * @param {Number} [params[].additionalInfo[].value]
+           *
+           * @returns {Promise}
+           */
+
+          updateUser: function(id, params) {
+              this.$.updateUser.url = this._url('/users/'+id );
+              this.$.updateUser.method = 'PUT';
+              this.$.updateUser.contentType = "application/json";
+              this.$.updateUser.body = params;
+              return this._generateRequest(this.$.updateUser);
+          },
+
+          /**
+           * Delete a user
+           *
+           * @param {String} id
+           *
+           * @returns {Promise}
+           */
+
+          deleteUser: function(id) {
+              this.$.deleteUser.url = this._url('/users/'+id );
+              this.$.deleteUser.method = 'DELETE';
+              this.$.deleteUser.contentType = "application/json";
+              return this._generateRequest(this.$.deleteUser);
           },
 
 
